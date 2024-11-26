@@ -105,57 +105,91 @@ Voy a corregir el ejercicio Caso Integrador 3 de Luis Crespo Garcia
 
 # Mejoras Propuestas para el Código
 
-## main.cpp
+# Mejoras del Código Según la Rúbrica
 
-### 1. Implementar manejo de excepciones
+## Carga de Scripts (50 puntos)
+
+### 1. Mejora de `load_script(const char* filename, bool show_script = false)` (25 puntos)
+
 ```cpp
-#include "cargararchivo.h"
+#include <fstream>
 #include <iostream>
+#include <stdexcept>
+#include <string>
 
-int main() {
-    try {
-        load_script();
-    } catch (const std::exception& e) {
-        std::cerr << "Error: " << e.what() << std::endl;
-        return 1;
+void load_script(const char* filename, bool show_script = false) {
+    std::ifstream file(filename);
+    if (!file) {
+        throw std::runtime_error("No se pudo abrir el archivo '" + std::string(filename) + "'.");
     }
-    return 0;
+
+    std::string content((std::istreambuf_iterator<char>(file)),
+                         std::istreambuf_iterator<char>());
+    
+    if (file.bad()) {
+        throw std::runtime_error("Error durante la lectura del archivo '" + std::string(filename) + "'.");
+    }
+
+    file.close();
+
+    if (show_script) {
+        std::cout << "Contenido del archivo:" << std::endl;
+        std::cout << content << std::endl;
+    }
+
+    std::cout << "El script se ha cargado correctamente en memoria." << std::endl;
 }
 ```
-## cargaarchivo.cpp
-### 1. Usar std::string para nombres de archivo
 ```cpp
-void load_script(const std::string& filename, bool show_script = false)
-```
-### 2. Implementar manejo de excepciones
-```cpp
-if (!file) {
-    throw std::runtime_error("No se pudo abrir el archivo '" + filename + "'.");
-}
-```
-### 3. Utilizar std::string_view para eficiencia
-```cpp
-#include <string_view>
-void load_script(std::string_view filename, bool show_script = false)
-```
-### 4. Añadir validación de nombre de archivo
-```cpp
-bool is_valid_filename(const std::string& filename) {
-    return !filename.empty() && filename.find_first_of("/\\?%*:|\"<>") == std::string::npos;
-}
-```
-### 5. Mejorar la función load_script() sin argumentos
-```cpp
+#include <filesystem>
+
 void load_script() {
     std::string filename;
     do {
         std::cout << "Ingrese el nombre del archivo: ";
         std::getline(std::cin, filename);
-    } while (!is_valid_filename(filename));
+        
+        if (filename.empty()) {
+            std::cerr << "Error: El nombre del archivo no puede estar vacío." << std::endl;
+            continue;
+        }
 
-    load_script(filename, true);
+        if (!std::filesystem::exists(filename)) {
+            std::cerr << "Error: El archivo '" << filename << "' no existe." << std::endl;
+            continue;
+        }
+
+        try {
+            load_script(filename.c_str(), true);
+            break;
+        } catch (const std::exception& e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    } while (true);
 }
 ```
+
+## Manejo de Errores (50 puntos)
+### 1. Manejo de errores para nombre de archivo inexistente (15 puntos)
+```cpp
+if (!std::filesystem::exists(filename)) {
+    std::cerr << "Error: El archivo '" << filename << "' no existe." << std::endl;
+    continue;
+}
+```
+### 2. Manejo de errores para apertura fallida del archivo (15 puntos)
+```cpp
+if (!file) {
+    throw std::runtime_error("No se pudo abrir el archivo '" + std::string(filename) + "'.");
+}
+```
+### 3. Manejo de errores durante la lectura del archivo (20 puntos)
+```cpp
+if (file.bad()) {
+    throw std::runtime_error("Error durante la lectura del archivo '" + std::string(filename) + "'.");
+}
+```
+
 Beneficios de las Mejoras
 Mayor robustez y manejo de errores.
 Mejor legibilidad y mantenibilidad del código.
