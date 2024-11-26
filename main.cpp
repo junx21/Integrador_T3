@@ -1,4 +1,4 @@
-#include "EJ1/Labmain.h"
+#include "EJ1/Ejercicio.h"
 
 int main()
 {
