@@ -98,3 +98,60 @@ void load_script() {
     scanf("%499s", filename);
     load_script(filename, true);
 }
+```
+# Conrección 
+
+Voy a corregir el ejercicio Caso Integrador 3 de Luis Crespo Garcia 
+
+# Mejoras Propuestas para el Código
+
+## main.cpp
+
+### 1. Implementar manejo de excepciones
+```cpp
+#include "cargararchivo.h"
+#include <iostream>
+
+int main() {
+    try {
+        load_script();
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+    return 0;
+}
+
+cargaarchivo.cpp
+1. Usar std::string para nombres de archivo
+cpp
+void load_script(const std::string& filename, bool show_script = false)
+
+2. Implementar manejo de excepciones
+cpp
+if (!file) {
+    throw std::runtime_error("No se pudo abrir el archivo '" + filename + "'.");
+}
+
+3. Utilizar std::string_view para eficiencia
+cpp
+#include <string_view>
+void load_script(std::string_view filename, bool show_script = false)
+
+4. Añadir validación de nombre de archivo
+cpp
+bool is_valid_filename(const std::string& filename) {
+    return !filename.empty() && filename.find_first_of("/\\?%*:|\"<>") == std::string::npos;
+}
+
+5. Mejorar la función load_script() sin argumentos
+cpp
+void load_script() {
+    std::string filename;
+    do {
+        std::cout << "Ingrese el nombre del archivo: ";
+        std::getline(std::cin, filename);
+    } while (!is_valid_filename(filename));
+
+    load_script(filename, true);
+}
