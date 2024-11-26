@@ -2,7 +2,7 @@
 #include <string>
 #include <cstdio>
 
-using namespace std;
+
 
 struct ColorConsole
 {
@@ -13,21 +13,21 @@ struct ColorConsole
 struct ConsoleBox
 {
     void new_text() {/*...*/}
-    void set_text(const string &text) { cout << text << endl; }
+    void set_text(const std::string &text) { std::cout << text << std::endl; }
 };
 
 ConsoleBox *consoleBox = new ConsoleBox; // suponemos que ya está inicializado
 
 void load_script(const char* filename, bool show_script = false)
 {
-    string script;
+    std::string script;
     FILE* f = nullptr;
     try
     {
         f = fopen(filename, "rb");
         if (!f)
         {
-            cerr << "error de apertura de " << filename << endl;
+            std::cerr << "error de apertura de " << filename << std::endl;
             return;
         }
 
@@ -43,15 +43,15 @@ void load_script(const char* filename, bool show_script = false)
 
         if (show_script)
         {
-            cout << ColorConsole::fg_blue << ColorConsole::bg_white;
-            cout << script << endl;
+            std::cout << ColorConsole::fg_blue << ColorConsole::bg_white;
+            std::cout << script << std::endl;
         }
         consoleBox->new_text();
         consoleBox->set_text(script);
     }
     catch (...)
     {
-        cerr << "error durante la lectura del archivo" << endl;
+        std::cerr << "error durante la lectura del archivo" <<std:: endl;
         if(f)
             fclose(f);
     }

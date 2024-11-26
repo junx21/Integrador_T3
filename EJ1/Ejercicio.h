@@ -7,7 +7,7 @@
 #include <cstring>
 #include <string>
 
-using namespace std;
+
 
 struct ColorConsole
 {
@@ -18,7 +18,7 @@ struct ColorConsole
 struct ConsoleBox
 {
     void new_text();
-    void set_text(const string &text);
+    void set_text(const std::string &text);
 };
 
 extern ConsoleBox* consoleBox;
