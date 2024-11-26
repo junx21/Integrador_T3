@@ -121,31 +121,31 @@ int main() {
     }
     return 0;
 }
-
-cargaarchivo.cpp
-1. Usar std::string para nombres de archivo
-cpp
+```
+## cargaarchivo.cpp
+### 1. Usar std::string para nombres de archivo
+```cpp
 void load_script(const std::string& filename, bool show_script = false)
-
-2. Implementar manejo de excepciones
-cpp
+```
+### 2. Implementar manejo de excepciones
+```cpp
 if (!file) {
     throw std::runtime_error("No se pudo abrir el archivo '" + filename + "'.");
 }
-
-3. Utilizar std::string_view para eficiencia
-cpp
+```
+### 3. Utilizar std::string_view para eficiencia
+```cpp
 #include <string_view>
 void load_script(std::string_view filename, bool show_script = false)
-
-4. Añadir validación de nombre de archivo
-cpp
+```
+### 4. Añadir validación de nombre de archivo
+```cpp
 bool is_valid_filename(const std::string& filename) {
     return !filename.empty() && filename.find_first_of("/\\?%*:|\"<>") == std::string::npos;
 }
-
-5. Mejorar la función load_script() sin argumentos
-cpp
+```
+### 5. Mejorar la función load_script() sin argumentos
+```cpp
 void load_script() {
     std::string filename;
     do {
@@ -155,3 +155,10 @@ void load_script() {
 
     load_script(filename, true);
 }
+```
+Beneficios de las Mejoras
+Mayor robustez y manejo de errores.
+Mejor legibilidad y mantenibilidad del código.
+Uso más eficiente de los recursos (con std::string_view).
+Validación de entradas para prevenir errores.
+Documentación clara para facilitar el uso y la comprensión del código.
