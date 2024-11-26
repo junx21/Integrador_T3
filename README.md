@@ -99,7 +99,7 @@ void load_script() {
     load_script(filename, true);
 }
 ```
-# Conrección 
+# Corrección 
 
 Voy a corregir el ejercicio Caso Integrador 3 de Luis Crespo Garcia 
 
